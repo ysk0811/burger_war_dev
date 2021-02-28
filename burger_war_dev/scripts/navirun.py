@@ -27,9 +27,6 @@ class NaviBot():
         self.vel_pub = rospy.Publisher('cmd_vel', Twist,queue_size=1)
         self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
 
-
-
-
     def setGoal(self,x,y,yaw):
         self.client.wait_for_server()
 
@@ -54,22 +51,23 @@ class NaviBot():
         else:
             return self.client.get_result()        
 
-
     def strategy(self):
         r = rospy.Rate(5) # change speed 5fps
 
-        self.setGoal(-0.5,0,0)
-        self.setGoal(-0.5,0,3.1415/2)
-        
-        self.setGoal(0,0.5,0)
-        self.setGoal(0,0.5,3.1415)
-        
-        self.setGoal(-0.5,0,-3.1415/2)
-        
-        self.setGoal(0,-0.5,0)
-        self.setGoal(0,-0.5,3.1415)
+        i = 0
+        while i < 5:
+            self.setGoal(-0.9,0,-3.1415*1/3)
+            self.setGoal(-0.9,0,3.1415*1/3)
 
+            self.setGoal(0,0.9,-3.1415*0.5/3)
+            self.setGoal(0,0.9,-3.1415*2.5/3)
 
+            self.setGoal(-0.4,0,-3.1415/2)
+
+            self.setGoal(0,-0.9,3.1415*0.5/3)
+            self.setGoal(0,-0.9,3.1415*2.5/3)
+
+            i += 1
 
 if __name__ == '__main__':
     rospy.init_node('navirun')
